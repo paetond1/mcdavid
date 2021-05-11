@@ -1,4 +1,4 @@
-import pygame, sys, math
+import pygame, math
 class enemy:
     def __init__(self, x, y, speed, patternIndex, image, shootingEnemy=None):
         self.initialX = x           # for resetting

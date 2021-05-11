@@ -103,10 +103,10 @@ background = pygame.image.load("../resources/images/background.jpg")
 while running:
     clock.tick(30)
 
-    # set background
+    # render background
     screen.blit(background, (0, 0))
 
-    # set game text
+    # render game text counters
     gameText = "Level: " + str(level) + "    " + "Deaths: " + str(deaths)
     screen.blit(font.render(gameText, True, (0, 0, 0)), (5,5))
     gamePaused = handlePause(gamePaused, width, height)
@@ -183,10 +183,10 @@ while running:
                     i.resetEnemy()
 
 
-    # move the player
+    # move and render the player
     movePlayer(playerXY)
 
-    # move the enemies
+    # move and render the enemies
     for i in enemyList:
         i.moveEnemy(height, width)
         screen.blit(i.image, (i.x, i.y))

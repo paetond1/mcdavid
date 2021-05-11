@@ -1,4 +1,4 @@
-import pygame, sys, math 
+import pygame, sys, math
 from enemy import enemy
 
 # display player on the screen
@@ -23,6 +23,8 @@ def handlePause(gamePaused, width, height):
     pauseX = width // 2 - font.size(pauseText)[0] // 2
     pauseY = height // 2
     while(gamePaused):
+        # set background
+        screen.blit(background, (0, 0))
         clock.tick(30)
         for event in pygame.event.get():
 
@@ -47,7 +49,7 @@ def handlePause(gamePaused, width, height):
 
 # initialize pygame
 pygame.init()
-font = pygame.font.SysFont('impact.ttf', 30)
+font = pygame.font.SysFont(None, 30)
 
 # initialize screen
 width = 1000
@@ -64,6 +66,8 @@ cupImg = pygame.image.load("../resources/images/cup.png")
 level = 0
 gamePaused = False
 deaths = 0
+running = True
+lastLevelWon = False
 
 # initialize position of stanley cup
 cupX = width - 58
@@ -83,23 +87,28 @@ e2 = enemy(width//3, 0, 5, 1, "../resources/images/enemy2.jpg")
 e3 = enemy(0, 0, 5, 2, "../resources/images/enemy3.jpg")
 e4 = enemy(width//4, height * 1/2 - 75//2, 5, 3, "../resources/images/enemy4.jpg")
 e5 = enemy(width - 75, height * 1/2 - 75//2, 5, 4, "../resources/images/enemy5.png")
-# this enemy fires a goalie stick
-e6 = enemy(width * 2, height * 2, 10, 5, "../resources/images/enemy6.jpg", e5)
+e6 = enemy(width * 2, height * 2, 10, 5, "../resources/images/enemy6.png", e5)
 
 allEnemies = [e0, e1, e2, e3, e4, e5, e6]
 enemyList = []
 
-# initialize caption, icon, clock
+# initialize caption, icon, clock, background
 pygame.display.set_caption(gameName)
 icon = pygame.image.load("../resources/images/icon.png")      # 32x32 icons only
 pygame.display.set_icon(icon)
 clock = pygame.time.Clock()
+background = pygame.image.load("../resources/images/background.jpg")
 
 # game loop
-running = True
 while running:
     clock.tick(30)
-    screen.fill(backgroundColor)
+
+    # set background
+    screen.blit(background, (0, 0))
+
+    # set game text
+    gameText = "Level: " + str(level) + "    " + "Deaths: " + str(deaths)
+    screen.blit(font.render(gameText, True, (0, 0, 0)), (5,5))
     gamePaused = handlePause(gamePaused, width, height)
     
     for event in pygame.event.get():
@@ -160,13 +169,16 @@ while running:
             resetPlayer(playerXY)
             deaths += 1
 
-    # set winning conditions
+    # see if there is a winning collision with the stanley cup
     if (playerXY[0] == (width - 90)):
         if playerXY[1] >= (height/2 - 60):
             if playerXY[1] <= (height/2 - 30):
+
+                # player has won
                 enemyList.append(allEnemies[level])
                 level += 1
                 resetPlayer(playerXY)
+                lastLevelWon = True
                 for i in enemyList:
                     i.resetEnemy()
 
@@ -181,10 +193,6 @@ while running:
 
     # display the target
     screen.blit(cupImg, (cupX, cupY))
-
-    # update in game text
-    gameText = "Level: " + str(level) + "    " + "Deaths: " + str(deaths)
-    screen.blit(font.render(gameText, True, (0, 0, 0)), (5,5))
 
     # update the display
     pygame.display.update()

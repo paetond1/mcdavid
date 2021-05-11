@@ -81,15 +81,19 @@ moveLeft = False
 moveRight = False
 
 # initialize enemies and enemy list
-e0 = enemy(width//2, 0, 5, 0, "../resources/images/enemy1.jpg")
-e1 = enemy(width//2 + 100, height - 75, 5, 0, "../resources/images/enemy1.jpg")
-e2 = enemy(width//3, 0, 5, 1, "../resources/images/enemy2.jpg")
-e3 = enemy(0, 0, 5, 2, "../resources/images/enemy3.jpg")
-e4 = enemy(width//4, height * 1/2 - 75//2, 5, 3, "../resources/images/enemy4.jpg")
-e5 = enemy(width - 75, height * 1/2 - 75//2, 5, 4, "../resources/images/enemy5.png")
+e1 = enemy(width//2, 0, 4, 0, "../resources/images/enemy1.jpg")
+e2 = enemy(width//2 + 100, height - 75, 4, 0, "../resources/images/enemy2.jpg")
+e3 = enemy(width//3, 0, 4, 1, "../resources/images/enemy3.jpg")
+e4 = enemy(0, 0, 4, 2, "../resources/images/enemy4.jpg")
+e5 = enemy(width - 75, height * 1/2 - 75//2, 4, 4, "../resources/images/enemy5.png")
 e6 = enemy(width * 2, height * 2, 10, 5, "../resources/images/enemy6.png", e5)
+e7 = enemy(width//4, height * 1/2 - 75//2, 4, 3, "../resources/images/enemy7.png")
+e8 = enemy(width//3, height - 75, 4, 1, "../resources/images/enemy8.jpg")
+e9 = enemy(width//2, 0, 2, 1, "../resources/images/enemy9.png")
+e10 = enemy(width//2, height - 75, 2, 1, "../resources/images/enemy10.jpg")
+boss = enemy(width - 75, 0, 2, 0, "../resources/images/boss.jpg")
 
-allEnemies = [e0, e1, e2, e3, e4, e5, e6]
+allEnemies = [e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, boss]
 enemyList = []
 
 # initialize caption, icon, clock, background
@@ -98,6 +102,8 @@ icon = pygame.image.load("../resources/images/icon.png")      # 32x32 icons only
 pygame.display.set_icon(icon)
 clock = pygame.time.Clock()
 background = pygame.image.load("../resources/images/background.jpg")
+
+
 
 # game loop
 while running:

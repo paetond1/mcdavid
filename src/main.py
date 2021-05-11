@@ -12,17 +12,24 @@ def resetPlayer(xyList):
 
 # determine a collison
 def isCollision(xyList, enemyX, enemyY):
-    distance = math.sqrt(math.pow(xyList[0] - enemyX, 2) + (math.pow(xyList[1] - enemyY, 2)))
-    if distance < 50:
-        return True
+
+    # get the distance between the centre of the player and the enemy
+    distance = math.sqrt(math.pow(xyList[0] + 45 - (enemyX + 75 // 2), 2) + (math.pow(xyList[1] + 45  - (enemyY + 75 // 2), 2)))
+
+    if distance < (90 // 2 + 75 // 2):
+        # if player is not at starting position, it is collision
+        if ((xyList[0] != 0) and (xyList[1] != height/2 - 45)):
+            return True
     else:
         return False
 
 def handlePause(gamePaused, width, height):
-    pauseText = "Game Paused - Press P to Resume"
+    pauseText = "Game Paused - Press P to Resume - Press Q to Quit"
     pauseX = width // 2 - font.size(pauseText)[0] // 2
     pauseY = height // 2
+   
     while(gamePaused):
+       
         # set background
         screen.blit(background, (0, 0))
         clock.tick(30)
@@ -32,10 +39,13 @@ def handlePause(gamePaused, width, height):
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_p:
                     gamePaused = False
+                if event.key == pygame.K_q:
+                    pygame.display.quit()
+                    pygame.quit()
+                    sys.exit()
 
             # quiting events
             if event.type == pygame.QUIT:
-                running = False
                 pygame.display.quit()
                 pygame.quit()
                 sys.exit()
@@ -45,6 +55,42 @@ def handlePause(gamePaused, width, height):
         pygame.display.update()
 
     return gamePaused
+
+def handleWonGame(width, height, deaths):
+    wonText1 = "Congratulations, you have brought Connor great honor."
+    wonText2 = "Press P to play again or Q to quit."
+    wonX1 = width // 2 - font.size(wonText1)[0] // 2
+    wonX2 = width // 2 - font.size(wonText2)[0] // 2
+    wonY1 = height // 2
+    wonY2 = height // 2 + 25
+    playAgain = False
+   
+    while(playAgain == False):
+       
+        # set background
+        screen.blit(background, (0, 0))
+        clock.tick(30)
+        for event in pygame.event.get():
+
+            # determine if player wants to quit or play again
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_p:
+                    playAgain = True
+                if event.key == pygame.K_q:
+                    pygame.display.quit()
+                    pygame.quit()
+                    sys.exit()
+
+            # quiting events
+            if event.type == pygame.QUIT:
+                pygame.display.quit()
+                pygame.quit()
+                sys.exit()
+
+        # update the display
+        screen.blit(font.render(wonText1, True, (0, 0, 0)), (wonX1, wonY1))
+        screen.blit(font.render(wonText2, True, (0, 0, 0)), (wonX2, wonY2))
+        pygame.display.update()
 
 
 # initialize pygame
@@ -67,7 +113,6 @@ level = 0
 gamePaused = False
 deaths = 0
 running = True
-lastLevelWon = False
 
 # initialize position of stanley cup
 cupX = width - 58
@@ -175,18 +220,39 @@ while running:
             resetPlayer(playerXY)
             deaths += 1
 
-    # see if there is a winning collision with the stanley cup
+    # see if there is a collision with the stanley cup to beat the level
     if (playerXY[0] == (width - 90)):
-        if playerXY[1] >= (height/2 - 60):
-            if playerXY[1] <= (height/2 - 30):
+        if playerXY[1] >= (height/2 - 90):
+            if playerXY[1] <= (height/2):
 
-                # player has won
-                enemyList.append(allEnemies[level])
                 level += 1
-                resetPlayer(playerXY)
-                lastLevelWon = True
-                for i in enemyList:
-                    i.resetEnemy()
+
+                # see if player has won the entire game
+                if (level > len(allEnemies)):
+
+                    # check if player wants to play again
+                    handleWonGame(width, height, deaths)
+                    enemyList.clear()
+                    level = 0
+                    deaths = 0
+                    resetPlayer(playerXY)
+                    moveUp = False
+                    moveDown = False
+                    moveLeft = False
+                    moveRight = False
+                    continue
+
+                # else there are more levels to play, set up next level
+                else:
+                    enemyList.append(allEnemies[level - 1])
+                    resetPlayer(playerXY)
+                    moveUp = False
+                    moveDown = False
+                    moveLeft = False
+                    moveRight = False
+                    for i in enemyList:
+                        i.resetEnemy()
+                    continue
 
 
     # move and render the player

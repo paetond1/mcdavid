@@ -16,10 +16,13 @@ def isCollision(xyList, enemyX, enemyY):
     # get the distance between the centre of the player and the enemy
     distance = math.sqrt(math.pow(xyList[0] + 45 - (enemyX + 75 // 2), 2) + (math.pow(xyList[1] + 45  - (enemyY + 75 // 2), 2)))
 
-    if distance < (90 // 2 + 75 // 2):
-        # if player is not at starting position, it is collision
-        if ((xyList[0] != 0) and (xyList[1] != height/2 - 45)):
-            return True
+    # if player is at starting position, no collision
+    if ((xyList[0] == 0) and (xyList[1] == height/2 - 45)):
+        return False
+    # else if distance is too small between player and enemy, it is a collision
+    elif distance < (90 // 2 + 75 // 2):
+        return True
+    # else no collision
     else:
         return False
 
@@ -51,7 +54,7 @@ def handlePause(gamePaused, width, height):
                 sys.exit()
 
         # update the display
-        screen.blit(font.render(pauseText, True, (0, 0, 0)), (pauseX, pauseY))
+        screen.blit(font.render(pauseText, True, OILER_BLUE), (pauseX, pauseY))
         pygame.display.update()
 
     return gamePaused
@@ -88,14 +91,22 @@ def handleWonGame(width, height, deaths):
                 sys.exit()
 
         # update the display
-        screen.blit(font.render(wonText1, True, (0, 0, 0)), (wonX1, wonY1))
-        screen.blit(font.render(wonText2, True, (0, 0, 0)), (wonX2, wonY2))
+        screen.blit(font.render(wonText1, True, OILER_BLUE), (wonX1, wonY1))
+        screen.blit(font.render(wonText2, True, OILER_BLUE), (wonX2, wonY2))
         pygame.display.update()
 
 
 # initialize pygame
 pygame.init()
-font = pygame.font.SysFont(None, 30)
+
+# initialize font
+OILER_BLUE = (4, 30, 66)
+OILER_ORANGE = (252, 76, 2)
+fontSize = 30
+titleFontSize = 60
+lineSpace = 5
+font = pygame.font.SysFont(None, fontSize)
+titleFont = pygame.font.SysFont(None, 60)
 
 # initialize screen
 width = 1000
@@ -149,8 +160,53 @@ clock = pygame.time.Clock()
 background = pygame.image.load("../resources/images/background.jpg")
 
 
+# INTRO ----------------------------------------------------------------------
 
-# game loop
+titleText = "McDAVID'S QUEST"
+titleX = width // 2 - titleFont.size(titleText)[0] // 2
+titleY = height // 4
+
+introText = [   "Get Connor McDavid to the cup. Avoid the obstacles.",
+                "Use the arrow keys to move Connor. Press P to pause.",
+                "Press space to begin!"
+            ]
+
+# render background, cup, player
+screen.blit(background, (0, 0))
+screen.blit(cupImg, (cupX, cupY))
+screen.blit(playerImg, (playerXY[0], playerXY[1]))
+
+# render title
+screen.blit(titleFont.render(titleText, True, OILER_ORANGE), (titleX, titleY))
+
+# render intro directions
+introTextY = height // 2 - (len(introText) * (fontSize + lineSpace) // 2)
+for text in introText:
+    screen.blit(font.render(text, True, OILER_BLUE), (width // 2 - font.size(text)[0] // 2, introTextY))
+    introTextY += fontSize + lineSpace
+
+# display all intro objects
+pygame.display.update()
+
+# wait for player to press space
+waiting = True
+while waiting:
+
+    for event in pygame.event.get():
+        # responses to keyboard inputs
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE:
+                waiting = False
+
+        # quiting events
+        if event.type == pygame.QUIT:
+            running = False
+            pygame.display.quit()
+            pygame.quit()
+            sys.exit()
+
+
+# GAME LOOP ---------------------------------------------------------------------
 while running:
     clock.tick(30)
 
@@ -159,7 +215,7 @@ while running:
 
     # render game text counters
     gameText = "Level: " + str(level) + "    " + "Deaths: " + str(deaths)
-    screen.blit(font.render(gameText, True, (0, 0, 0)), (5,5))
+    screen.blit(font.render(gameText, True, OILER_BLUE), (5,5))
     gamePaused = handlePause(gamePaused, width, height)
     
     for event in pygame.event.get():

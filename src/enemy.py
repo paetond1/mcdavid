@@ -150,3 +150,41 @@ class enemy:
         self.right = True
         self.radians = math.pi
 
+class boss(enemy):
+    def __init__(self, x, y, speed, image):
+        super().__init__(x, y, speed, 0, image)
+
+    def moveEnemy(self, height, width):
+
+        # determine y coordinate
+        if self.down == True:
+            if self.y >= height - 150:
+                self.down = False
+                self.y -= self.speed
+            else:
+                self.y += self.speed
+        else:
+            if self.y <= 0:
+                self.down = True
+                self.y += self.speed
+            else:
+                self.y -= self.speed
+
+        # determine x coordinate
+        if self.right == True:
+            if self.x >= width - 150:
+                self.right = False
+                self.x -= self.speed
+            else:
+                self.x += self.speed
+        else:
+            if self.x <= 0:
+                self.right = True
+                self.x += self.speed
+            else:
+                self.x -= self.speed
+
+
+
+
+

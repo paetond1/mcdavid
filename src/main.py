@@ -1,5 +1,6 @@
 import pygame, sys, math
 from enemy import enemy
+from enemy import boss
 
 # display player on the screen
 def movePlayer(xyList):
@@ -60,6 +61,10 @@ def handlePause(gamePaused, width, height):
     return gamePaused
 
 def handleWonGame(width, height, deaths):
+    score = str(deaths) + " deaths"
+    scoreX = width // 2 - titleFont.size(score)[0] // 2
+    scoreY = height // 3
+
     wonText1 = "Congratulations, you have brought Connor great honor."
     wonText2 = "Press P to play again or Q to quit."
     wonX1 = width // 2 - font.size(wonText1)[0] // 2
@@ -91,6 +96,7 @@ def handleWonGame(width, height, deaths):
                 sys.exit()
 
         # update the display
+        screen.blit(titleFont.render(score, True, OILER_ORANGE), (scoreX, scoreY))
         screen.blit(font.render(wonText1, True, OILER_BLUE), (wonX1, wonY1))
         screen.blit(font.render(wonText2, True, OILER_BLUE), (wonX2, wonY2))
         pygame.display.update()
@@ -125,11 +131,11 @@ gamePaused = False
 deaths = 0
 running = True
 
-# initialize position of stanley cup
+# initialize stanley cup
 cupX = width - 58
 cupY = height/2 - 45
 
-# initialize position and movements of player
+# initialize player
 playerXY = [0, height/2 - 45]
 moveUp = False
 moveDown = False
@@ -147,9 +153,9 @@ e7 = enemy(width//4, height * 1/2 - 75//2, 4, 3, "../resources/images/enemy7.png
 e8 = enemy(width//3, height - 75, 4, 1, "../resources/images/enemy8.jpg")
 e9 = enemy(width//2, 0, 2, 1, "../resources/images/enemy9.png")
 e10 = enemy(width//2, height - 75, 2, 1, "../resources/images/enemy10.jpg")
-boss = enemy(width - 75, 0, 2, 0, "../resources/images/boss.jpg")
+boss1 = boss(0, 0, 6, "../resources/images/boss.jpg")
 
-allEnemies = [e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, boss]
+allEnemies = [e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, boss1]
 enemyList = []
 
 # initialize caption, icon, clock, background

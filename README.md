@@ -3,7 +3,9 @@
 McDavid's Quest is a personal game development project written in python to gain experience working with the pygame library.
 
 ## About the Game
-Connor McDavid is the best hockey player in the world, and he's on a quest for the Stanley Cup. But such a quest does not come without obstacles. Get Connor to the cup, and avoid all of his enemies along the way. 
+Connor McDavid is the best hockey player in the world, and he's on a quest for the Stanley Cup. But such a quest does not come without obstacles. Get Connor to the cup, and avoid all of his enemies along the way.
+
+![alt text](https://github.com/paetond1/mcdavid/gameplay.png?raw=true) 
 
 ## Gameplay Objective
 Get Connor McDavid to the Stanley Cup in each level while colliding with the least amount of enemies.

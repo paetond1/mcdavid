@@ -17,9 +17,10 @@ Get Connor McDavid to the Stanley Cup in each level while colliding with the lea
 * pygame 2
 
 ## Running the Game
-After installing python3 and pygame, execute the following command in a terminal:
+After installing python3 and pygame, execute the following command in a terminal while inside the respository folder:
 ```
-mcdavid$ python3 src/main.py
+mcdavid$ cd src
+mcdavid/src$ python3 main.py
 ``` 
 
 

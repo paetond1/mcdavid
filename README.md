@@ -8,7 +8,7 @@ Connor McDavid is the best hockey player in the world, and he's on a quest for t
 ![Gameplay Photo](https://github.com/paetond1/mcdavid/blob/main/resources/images/gameplay.png?raw=true) 
 
 ## Gameplay Objective
-Get Connor McDavid to the Stanley Cup in each level while colliding with the least amount of enemies.
+Get Connor McDavid to the Stanley Cup in each level and avoid colliding with enemies.
 
 ## Gameplay Controls
 * Arrow Keys - Move Connor
